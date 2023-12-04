@@ -14,5 +14,11 @@ namespace WebApiControlDatosAviones.Controllers
 
          return View();
       }
+
+      [HttpGet]
+      public JsonResult pruebaConexion()
+      {
+         return Json(new { resultado = "Mauricio", mensaje = "Calderon" }, JsonRequestBehavior.AllowGet);
+      }
    }
 }
