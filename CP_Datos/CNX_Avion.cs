@@ -66,7 +66,7 @@ namespace CP_Datos
       }
 
       //Registrar una nuevo avion en la tabla avion de la base de datos  
-      public int RegistrarNuevoAvion(avion avionn)
+      public int RegistrarNuevoAvion(avion datosAvion)
       {
          int resultado = -1;
 
@@ -76,13 +76,11 @@ namespace CP_Datos
             using (SqlConnection conexionBD = new SqlConnection(BDConexion.conexionBD))
             {
                //Crear el envio del sript a ejecutar en la base de datos 
-               SqlCommand cmd = new SqlCommand("sp_AgregarEncuesta", conexionBD);
+               SqlCommand cmd = new SqlCommand("sp_RegistrarNewAvion", conexionBD);
                //Datos del avion
-               cmd.Parameters.AddWithValue("numAvion", avionn.numAvion);
-               cmd.Parameters.AddWithValue("serieAvion", avionn.serieAvion);
-               cmd.Parameters.AddWithValue("nombreFantasiaAvion", avionn.nombreFantasiaAvion);
-               cmd.Parameters.AddWithValue("idTipoAvio", avionn.idTipoAvio);
-               cmd.Parameters.AddWithValue("estadoAvionRetOActivo", avionn.estadoAvionRetOActivo);
+               cmd.Parameters.AddWithValue("serieAvion", datosAvion.serieAvion);
+               cmd.Parameters.AddWithValue("nombreFantasiaAvion", datosAvion.nombreFantasiaAvion);
+               cmd.Parameters.AddWithValue("idTipoAvio", datosAvion.idTipoAvio);
                cmd.CommandType = CommandType.StoredProcedure;
 
                //Abrir conexion con la base de datos
@@ -103,7 +101,7 @@ namespace CP_Datos
          return resultado;
       }
 
-      //Incrementar la puntuacion del lenguaje
+      //Incrementar la cantida de aviones 
       public int IncrementarCantidadAviones(int idTipoAvion, int cantidadAvion)
       {
          int resultado = 1;
@@ -176,6 +174,47 @@ namespace CP_Datos
 
          //Retornar la cantidad de aviones 
          return cantidadAviones;
+      }
+
+
+      //Consultar el tipo de avion  
+      public int ConsultarTipoAvion(int idMarcaAvion, int idModeloAvion)
+      {
+         int _tipoAvion = -1;
+
+         try
+         {
+            using (SqlConnection conexionBD = new SqlConnection(BDConexion.conexionBD))
+            {
+               //String a ejecutar en la base de datos 
+               string query = "select idTipoAvion from tipoAvion where idMarcaAvio = " + idMarcaAvion + " and idMarcaAvio = " + idModeloAvion;
+
+               //Crear el envio del sript a ejecutar en la base de datos 
+               SqlCommand cmd = new SqlCommand(query, conexionBD);
+               cmd.CommandType = CommandType.Text;
+
+               //Abrir conexion con la base de datos
+               conexionBD.Open();
+
+               //Ejecutar o enviar el script a la base de datos con la consulta 
+               using (SqlDataReader reader = cmd.ExecuteReader())
+               {
+                  //Leer la respuesta de la base de datos
+                  while (reader.Read())
+                  {
+                     //Almacenar cantidad de aviones 
+                     _tipoAvion = Convert.ToInt32(reader["idTipoAvion"]);
+                  }
+               }
+            }
+         }
+         catch (Exception ex)
+         {
+            _tipoAvion = -1;
+         }
+
+         //Retornar la cantidad de aviones 
+         return _tipoAvion;
       }
    }
 }

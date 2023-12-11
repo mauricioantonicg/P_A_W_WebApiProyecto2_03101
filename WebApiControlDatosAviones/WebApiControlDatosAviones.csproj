@@ -270,6 +270,10 @@
     <Content Include="Scripts\jquery-3.7.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CP_Datos\CP_Datos.csproj">
+      <Project>{685C5742-38B8-4971-92EB-9652C1FAF047}</Project>
+      <Name>CP_Datos</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CP_Entidad\CP_Entidad.csproj">
       <Project>{637fd3df-d332-435f-bb98-12b35a1b4780}</Project>
       <Name>CP_Entidad</Name>
